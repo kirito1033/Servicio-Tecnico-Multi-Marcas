@@ -1,0 +1,57 @@
+<section id="view-ingresos-factura" class="view-section hidden">
+  <header class="topbar">
+    <div>
+      <h2>Ingreso de repuestos</h2>
+      <p>Relaciona el ingreso con una orden de servicio buscando por MM.</p>
+    </div>
+  </header>
+
+  <form id="formIngresoFactura" class="panel">
+    <div class="panel-header">
+      <div>
+        <h3>Datos del ingreso</h3>
+        <p>Selecciona la orden, registra el repuesto y sus valores.</p>
+      </div>
+    </div>
+
+    <div class="form-grid two-cols">
+      <div class="field">
+        <label for="selectMMIngreso">Seleccionar orden (MM)</label>
+        <input type="text" id="filtroMM" placeholder="Buscar MM..." />
+
+        <select id="selectMMIngreso" size="6" style="height:150px;">
+        </select>
+        </div>
+
+      <input type="hidden" id="ordenServicioIdIngreso" />
+
+      <div class="field">
+        <label for="nombreRepuestoIngreso">Nombre del repuesto</label>
+        <input type="text" id="nombreRepuestoIngreso" required />
+      </div>
+
+      <div class="field">
+        <label for="vendedorIngresoFactura">Vendedor</label>
+        <input type="text" id="vendedorIngresoFactura" required />
+      </div>
+
+      <div class="field">
+        <label for="precioCompraIngresoFactura">Precio de compra</label>
+        <input type="number" id="precioCompraIngresoFactura" step="0.01" min="0" required />
+      </div>
+
+      <div class="field">
+        <label for="precioVentaIngresoFactura">Precio de venta</label>
+        <input type="number" id="precioVentaIngresoFactura" step="0.01" min="0" required />
+      </div>
+    </div>
+
+    <div class="filters-actions">
+      <button type="submit" class="btn btn-primary">Guardar ingreso</button>
+      <button type="button" id="btnLimpiarIngresoFactura" class="btn btn-secondary">Limpiar</button>
+      <button class="btn btn-primary" onclick="irAIngresos()">
+        Agregar repuestos a orden
+        </button>
+    </div>
+  </form>
+</section>

@@ -1,0 +1,100 @@
+<section id="view-ingresos-factura-tabla" class="view-section hidden">
+
+  <header class="topbar">
+    <div>
+      <h2>Tabla de ingresos de repuestos</h2>
+      <p>Listado de repuestos registrados</p>
+    </div>
+  </header>
+
+  <section class="panel">
+    <div class="panel-header">
+      <div>
+        <h3>Listado de ingresos de repuestos</h3>
+        <p id="resumenIngresosFactura">Sin ingresos cargados.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="cases-table">
+        <thead>
+          <tr>
+            <th>MM</th>
+            <th>Repuesto</th>
+            <th>Vendedor</th>
+            <th>Precio compra</th>
+            <th>Precio venta</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyIngresosFactura"></tbody>
+      </table>
+    </div>
+
+    <div id="emptyStateIngresosFactura" class="empty-state hidden">
+      <h4>No hay ingresos de repuestos para mostrar</h4>
+      <p>Cuando registres ingresos, aparecerán aquí.</p>
+    </div>
+  </section>
+<button type="button" class="btn btn-primary" onclick="descargarPdfListaIngresos()">
+  Descargar PDF
+</button>
+</section>
+<div id="modalIngreso" class="modal-ingreso hidden">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Detalle de ingreso</h3>
+      <button type="button" class="modal-close-btn" onclick="cerrarModalIngreso()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <input type="hidden" id="editIngresoId">
+
+      <div class="form-group">
+        <label for="editMMIngreso">MM</label>
+        <input type="text" id="editMMIngreso" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="editRepuesto">Repuesto</label>
+        <input type="text" id="editRepuesto">
+      </div>
+
+      <div class="form-group">
+        <label for="editVendedor">Vendedor</label>
+        <input type="text" id="editVendedor">
+      </div>
+
+      <div class="form-group">
+        <label for="editCompra">Precio compra</label>
+        <input type="number" id="editCompra">
+      </div>
+
+      <div class="form-group">
+        <label for="editVenta">Precio venta</label>
+        <input type="number" id="editVenta">
+      </div>
+    </div>
+
+    <div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-secondary"
+    onclick="cerrarModalIngreso()"
+  >
+    Cerrar
+  </button>
+
+  <button
+    type="button"
+    id="btnGuardarIngreso"
+    class="btn btn-primary"
+    onclick="guardarEdicionIngreso()"
+  >
+    Guardar cambios
+  </button>
+</div>
+  </div>
+</div>

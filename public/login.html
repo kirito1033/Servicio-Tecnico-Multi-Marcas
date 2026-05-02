@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Servicio Técnico</title>
+  <link rel="stylesheet" href="./css/login.css" />
+</head>
+<body>
+  <main class="login-page">
+    <section class="login-card">
+      <div class="login-brand">
+        <div class="login-logos">
+          <img src="./assets/logos/logo_nac.png" alt="Logo NAC" class="login-logo" />
+          <img src="./assets/logos/wefone.png" alt="Logo Wefone" class="login-logo wefone-logo" />
+        </div>
+        <h1>Iniciar sesión</h1>
+        <p>Accede al sistema de servicio técnico.</p>
+      </div>
+
+      <form id="loginForm" class="login-form">
+        <div class="field">
+          <label for="login">Usuario o correo</label>
+          <input type="text" id="login" name="login" autocomplete="username" required />
+        </div>
+
+        <div class="field">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" name="password" autocomplete="current-password" required />
+        </div>
+
+        <button type="submit" class="btn-login">Ingresar</button>
+        <p id="loginMessage" class="login-message"></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="./js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<section id="view-calculadora" class="view-section hidden">
+  <header class="topbar">
+    <div>
+      <h2>Calculadora de cotización</h2>
+      <p>Calcula mano de obra más repuesto según el tipo de equipo y el rango.</p>
+    </div>
+  </header>
+
+  <section class="panel">
+    <div class="panel-header">
+      <div>
+        <h3>Cotizar desde valor repuesto</h3>
+        <p>Total final = total cotización - descuento aplicado.</p>
+      </div>
+    </div>
+
+    <div class="form-grid two-cols">
+      <div class="field">
+        <label>Tipo de equipo</label>
+        <div class="checkbox-row">
+          <label class="check-item">
+            <input
+              type="radio"
+              name="calcTipoEquipo"
+              id="calcTipoEquipoCelular"
+              value="celular"
+              checked
+            />
+            <span>Celular (mano de obra 50.000)</span>
+          </label>
+
+          <label class="check-item">
+            <input
+              type="radio"
+              name="calcTipoEquipo"
+              id="calcTipoEquipoPc"
+              value="pc"
+            />
+            <span>PC (mano de obra 70.000)</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="calcValorRepuesto">Valor repuesto (COP)</label>
+        <input type="number" id="calcValorRepuesto" min="0" step="1" />
+      </div>
+
+      <div class="field">
+        <label class="check-item">
+          <input type="checkbox" id="calcTieneDescuento" />
+          <span>Descuento</span>
+        </label>
+      </div>
+
+      <div class="field hidden" id="calcDescuentoWrap">
+        <label for="calcDescuento">% descuento</label>
+        <input type="number" id="calcDescuento" min="0" max="100" step="1" value="0" />
+      </div>
+
+      <div class="field">
+        <label for="calcFactorAplicado">Factor aplicado</label>
+        <input type="text" id="calcFactorAplicado" readonly />
+      </div>
+
+      <div class="field">
+        <label for="calcManoObra">Mano de obra</label>
+        <input type="text" id="calcManoObra" readonly />
+      </div>
+
+      <div class="field">
+        <label for="calcSubtotalRepuesto">Subtotal repuesto cotizado</label>
+        <input type="text" id="calcSubtotalRepuesto" readonly />
+      </div>
+
+      <div class="field">
+        <label for="calcTotalBase">Total antes de descuento</label>
+        <input type="text" id="calcTotalBase" readonly />
+      </div>
+
+      <div class="field">
+        <label for="calcValorDescuento">Valor descuento</label>
+        <input type="text" id="calcValorDescuento" readonly />
+      </div>
+
+      <div class="field">
+        <label for="calcResultadoCotizacion">Total cotización</label>
+        <input type="text" id="calcResultadoCotizacion" readonly />
+      </div>
+    </div>
+
+    <div class="filters-actions">
+      <button type="button" class="btn btn-primary" id="btnCalcDesdeRepuesto">
+        Calcular cotización
+      </button>
+      <button type="button" class="btn btn-secondary" id="btnCalcLimpiarDirecto">
+        Limpiar
+      </button>
+    </div>
+  </section>
+</section>

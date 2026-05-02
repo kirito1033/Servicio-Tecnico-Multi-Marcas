@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión Servicio Técnico</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge">ST</div>
+        <div>
+          <h1>Servicio Técnico</h1>
+          <p>Gestión de casos</p>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-link active" data-view="casos">Casos</button>
+        <button class="nav-link" data-view="ingresos">Ingresos</button>
+        <button class="nav-link" data-view="calculadora">Calculadora</button>
+        <button class="nav-link" data-view="ingresos-factura">Ingresos repuestos</button>
+        <button class="nav-link" data-view="ingresos-factura-tabla">Ingresos Factura</button>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <!-- VISTA CASOS -->
+      <section id="view-casos" class="view-section">
+        <header class="topbar">
+          <div>
+            <h2>Módulo de casos</h2>
+            <p>Consulta por MM, técnico, teléfono o identificación.</p>
+          </div>
+
+          <button id="btnRecargar" class="btn btn-secondary">Recargar</button>
+        </header>
+
+        <section class="stats-grid">
+          <article class="stat-card">
+            <span>Total casos</span>
+            <strong id="statTotal">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>Ingresados</span>
+            <strong id="statIngresados">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>En proceso</span>
+            <strong id="statProceso">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>Cerrados</span>
+            <strong id="statCerrados">0</strong>
+          </article>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>Filtros</h3>
+              <p>Usa uno o varios filtros para buscar casos.</p>
+            </div>
+          </div>
+
+          <div class="filters-grid">
+            <div class="field">
+              <label for="filtroMM">MM</label>
+              <input type="text" id="filtroMM" placeholder="Ej. MM12345" />
+            </div>
+
+            <div class="field">
+              <label for="filtroTecnico">Técnico</label>
+              <input type="text" id="filtroTecnico" placeholder="Nombre del técnico" />
+            </div>
+
+            <div class="field">
+              <label for="filtroTelefono">Teléfono</label>
+              <input type="text" id="filtroTelefono" placeholder="300..." />
+            </div>
+
+            <div class="field">
+              <label for="filtroIdentificacion">Identificación</label>
+              <input type="text" id="filtroIdentificacion" placeholder="Número de identificación" />
+            </div>
+          </div>
+
+          <div class="filters-actions">
+            <button id="btnBuscar" class="btn btn-primary">Buscar</button>
+            <button id="btnLimpiar" class="btn btn-secondary">Limpiar</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>Listado de casos</h3>
+              <p id="resumenResultados">Sin resultados cargados.</p>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="cases-table">
+              <thead>
+                <tr>
+                  <th>MM</th>
+                  <th>Técnico</th>
+                  <th>Cliente</th>
+                  <th>Identificación</th>
+                  <th>Teléfono</th>
+                  <th>Modelo</th>
+                  <th>Falla</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyCasos"></tbody>
+            </table>
+          </div>
+
+          <div id="emptyState" class="empty-state hidden">
+            <h4>No hay casos para mostrar</h4>
+            <p>Cuando registres casos o la búsqueda tenga coincidencias, aparecerán aquí.</p>
+          </div>
+        </section>
+      </section>
+
+      <!-- VISTA INGRESOS -->
+      <section id="view-ingresos" class="view-section hidden">
+        <header class="topbar">
+          <div>
+            <h2>Nuevo ingreso</h2>
+            <p>Registra un nuevo equipo en servicio técnico.</p>
+          </div>
+        </header>
+
+        <form id="formIngreso" class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>Datos del cliente</h3>
+              <p>Información principal para identificar al cliente.</p>
+            </div>
+          </div>
+
+          <div class="form-grid two-cols">
+            <div class="field">
+              <label for="nombre">Nombre</label>
+              <input type="text" id="nombre" required />
+            </div>
+
+            <div class="field">
+              <label for="apellido">Apellido</label>
+              <input type="text" id="apellido" required />
+            </div>
+
+            <div class="field">
+            <label for="tipoIdentificacion">Tipo de identificación</label>
+            <select id="tipoIdentificacion">
+                <option value="">Seleccione una opción</option>
+            </select>
+            </div>
+
+            <div class="field">
+              <label for="numeroIdentificacion">Número de identificación</label>
+              <input type="text" id="numeroIdentificacion" />
+            </div>
+
+            <div class="field">
+              <label for="telefonoIngreso">Teléfono</label>
+              <input type="text" id="telefonoIngreso" required />
+            </div>
+
+            <div class="field">
+              <label for="email">Email</label>
+              <input type="email" id="email" />
+            </div>
+          </div>
+
+          <div class="panel-header section-gap">
+            <div>
+              <h3>Datos del equipo</h3>
+              <p>Información del dispositivo recibido.</p>
+            </div>
+          </div>
+
+          <div class="form-grid two-cols">
+            <div class="field">
+              <label for="tecnicoIngreso">Técnico</label>
+                <select id="tecnicoIngreso">
+                    <option value="">Seleccione un técnico</option>
+                </select>
+            </div>
+
+            <div class="field">
+              <label for="modeloIngreso">Modelo</label>
+              <input type="text" id="modeloIngreso" required />
+            </div>
+
+            <div class="field">
+              <label for="colorIngreso">Color</label>
+              <input type="text" id="colorIngreso" />
+            </div>
+
+            <div class="field">
+              <label for="snIngreso">Serial / SN</label>
+              <input type="text" id="snIngreso" />
+            </div>
+
+            <div class="field">
+              <label for="contrasenaIngreso">Contraseña</label>
+              <input type="text" id="contrasenaIngreso" />
+            </div>
+
+            <div class="field">
+              <label for="precioIngreso">Precio</label>
+              <input type="number" id="precioIngreso" step="0.01" />
+            </div>
+
+            <div class="field">
+              <label for="fechaIngreso">Fecha de ingreso</label>
+              <input type="date" id="fechaIngreso" />
+            </div>
+
+            <div class="field">
+              <label for="fechaEgreso">Fecha de egreso</label>
+              <input type="date" id="fechaEgreso" />
+            </div>
+          </div>
+
+          <div class="panel-header section-gap">
+            <div>
+              <h3>Accesorios recibidos</h3>
+              <p>Marca los accesorios que se reciben junto al equipo.</p>
+            </div>
+          </div>
+
+          <div class="form-grid one-col">
+            <div class="field checkbox-group">
+              <label>Accesorios</label>
+              <div class="checkbox-row">
+                <label class="check-item">
+                  <input type="checkbox" name="accesorios" value="Sim Card">
+                  <span>Sim card</span>
+                </label>
+
+                <label class="check-item">
+                  <input type="checkbox" name="accesorios" value="Micro SD">
+                  <span>Micro SD</span>
+                </label>
+
+                <label class="check-item">
+                  <input type="checkbox" name="accesorios" value="Batería">
+                  <span>Batería</span>
+                </label>
+
+                <label class="check-item">
+                  <input type="checkbox" name="accesorios" value="Tapa">
+                  <span>Tapa</span>
+                </label>
+
+                <label class="check-item">
+                  <input type="checkbox" name="accesorios" value="Forro">
+                  <span>Forro</span>
+                </label>
+
+                <label class="check-item">
+                  <input type="checkbox" name="accesorios" value="Cargador">
+                  <span>Cargador</span>
+                </label>
+
+                <label class="check-item check-item--other">
+                  <input type="checkbox" id="accesorioOtroCheck" name="accesorios" value="Otro">
+                  <span>Otro</span>
+                  <input
+                    type="text"
+                    id="accesorioOtroTexto"
+                    class="input-other"
+                    placeholder="Especificar accesorio"
+                    disabled
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-header section-gap">
+            <div>
+              <h3>Estado del equipo</h3>
+              <p>Registra el estado visual y funcional al ingreso.</p>
+            </div>
+          </div>
+
+          <div class="form-grid one-col">
+            <div class="field checkbox-group">
+              <label>Estado general</label>
+              <div class="checkbox-row">
+                <label class="check-item">
+                  <input type="checkbox" name="estadoGeneral" value="Enciende">
+                  <span>Enciende</span>
+                </label>
+                <label class="check-item">
+                  <input type="checkbox" name="estadoGeneral" value="No enciende">
+                  <span>No enciende</span>
+                </label>
+                <label class="check-item">
+                  <input type="checkbox" name="estadoGeneral" value="Rayas">
+                  <span>Rayas</span>
+                </label>
+                <label class="check-item">
+                  <input type="checkbox" name="estadoGeneral" value="Manchas">
+                  <span>Manchas</span>
+                </label>
+                <label class="check-item">
+                  <input type="checkbox" name="estadoGeneral" value="Buen estado">
+                  <span>Buen estado</span>
+                </label>
+                <label class="check-item">
+                  <input type="checkbox" name="estadoGeneral" value="Pixeles">
+                  <span>Pixeles</span>
+                </label>
+                <label class="check-item">
+                  <input type="checkbox" name="estadoGeneral" value="Sin imagen">
+                  <span>Sin imagen</span>
+                </label>
+                <label class="check-item">
+                  <input type="checkbox" name="estadoGeneral" value="Partido">
+                  <span>Partido</span>
+                </label>
+                <label class="check-item">
+                  <input type="checkbox" name="estadoGeneral" value="Evidencia de manipulación">
+                  <span>Evidencia de manipulación</span>
+                </label>
+                <label class="check-item">
+                  <input type="checkbox" name="estadoGeneral" value="Equipo mojado">
+                  <span>Equipo mojado</span>
+                </label>
+                <label class="check-item">
+                  <input type="checkbox" name="estadoGeneral" value="Error llamada">
+                  <span>Error llamada</span>
+                </label>
+                <label class="check-item">
+                  <input type="checkbox" name="estadoGeneral" value="Garantía servicio técnico">
+                  <span>Garantía servicio técnico</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-header section-gap">
+            <div>
+              <h3>Pruebas de componentes</h3>
+              <p>Selecciona el estado de cada componente probado.</p>
+            </div>
+          </div>
+
+          <div class="form-grid one-col componentes-grid">
+            <div class="field">
+              <label>Touch</label>
+              <div class="checkbox-row">
+                <label class="check-item">
+                  <input type="radio" name="touch" value="Dañado">
+                  <span>Dañado</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="touch" value="Buen estado">
+                  <span>Buen estado</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="touch" value="Sin funcionamiento">
+                  <span>Sin funcionamiento</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="touch" value="Sin verificar">
+                  <span>Sin verificar</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Visor / Cristal</label>
+              <div class="checkbox-row">
+                <label class="check-item">
+                  <input type="radio" name="visor" value="Partido">
+                  <span>Partido</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="visor" value="Rayado">
+                  <span>Rayado</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="visor" value="Buen estado">
+                  <span>Buen estado</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="visor" value="Sin verificar">
+                  <span>Sin verificar</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Carcasa</label>
+              <div class="checkbox-row">
+                <label class="check-item">
+                  <input type="radio" name="carcasa" value="Golpeado">
+                  <span>Golpeado</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="carcasa" value="Rayado">
+                  <span>Rayado</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="carcasa" value="Buen estado">
+                  <span>Buen estado</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="carcasa" value="Partido">
+                  <span>Partido</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Biometría</label>
+              <div class="checkbox-row">
+                <label class="check-item">
+                  <input type="radio" name="biometria" value="Dañado">
+                  <span>Dañado</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="biometria" value="Obstruido">
+                  <span>Obstruido</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="biometria" value="Lectura">
+                  <span>Lectura</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="biometria" value="N/A">
+                  <span>N/A</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Cámara frontal</label>
+              <div class="checkbox-row">
+                <label class="check-item">
+                  <input type="radio" name="camaraFrontal" value="Borrosa">
+                  <span>Borrosa</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="camaraFrontal" value="Sin imagen">
+                  <span>Sin imagen</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="camaraFrontal" value="Buen estado">
+                  <span>Buen estado</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="camaraFrontal" value="Sin verificar">
+                  <span>Sin verificar</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Cámara trasera</label>
+              <div class="checkbox-row">
+                <label class="check-item">
+                  <input type="radio" name="camaraTrasera" value="Borrosa">
+                  <span>Borrosa</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="camaraTrasera" value="Sin imagen">
+                  <span>Sin imagen</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="camaraTrasera" value="Buen estado">
+                  <span>Buen estado</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="camaraTrasera" value="Sin verificar">
+                  <span>Sin verificar</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Buzzer</label>
+              <div class="checkbox-row">
+                <label class="check-item">
+                  <input type="radio" name="buzzer" value="Sin sonido">
+                  <span>Sin sonido</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="buzzer" value="Distorsionado">
+                  <span>Distorsionado</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="buzzer" value="Buen estado">
+                  <span>Buen estado</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="buzzer" value="Sin verificar">
+                  <span>Sin verificar</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Altavoz</label>
+              <div class="checkbox-row">
+                <label class="check-item">
+                  <input type="radio" name="altavoz" value="Sin sonido">
+                  <span>Sin sonido</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="altavoz" value="Distorsionado">
+                  <span>Distorsionado</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="altavoz" value="Buen estado">
+                  <span>Buen estado</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="altavoz" value="Sin verificar">
+                  <span>Sin verificar</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Micrófono</label>
+              <div class="checkbox-row">
+                <label class="check-item">
+                  <input type="radio" name="microfono" value="Sin sonido">
+                  <span>Sin sonido</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="microfono" value="Distorsionado">
+                  <span>Distorsionado</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="microfono" value="Buen estado">
+                  <span>Buen estado</span>
+                </label>
+                <label class="check-item">
+                  <input type="radio" name="microfono" value="Sin verificar">
+                  <span>Sin verificar</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-header section-gap">
+            <div>
+              <h3>Servicio</h3>
+              <p>Describe la falla y el estado visual del equipo.</p>
+            </div>
+          </div>
+
+          <div class="form-grid one-col">
+            <div class="field">
+              <label for="fallaIngreso">Falla reportada</label>
+              <textarea id="fallaIngreso" rows="4" required></textarea>
+            </div>
+
+            <div class="field">
+              <label for="aparienciaIngreso">Descripción apariencia</label>
+              <textarea id="aparienciaIngreso" rows="4"></textarea>
+            </div>
+
+            <div class="field field--hidden">
+                <label for="diagnosticoIngreso">Diagnóstico final</label>
+                <textarea id="diagnosticoIngreso" rows="4"></textarea>
+                </div>
+          </div>
+
+          <div class="filters-actions">
+            <button type="submit" class="btn btn-primary">Guardar ingreso</button>
+            <button type="button" id="btnResetIngreso" class="btn btn-secondary">Limpiar</button>
+          </div>
+        </form>
+      </section>
+      <div data-include="./partials/view-calculadora.html"></div>
+      <div data-include="./partials/view-ingresos-factura.html"></div>
+      <div data-include="./partials/view-ingresos-table.html"></div>
+    </main>
+  </div>
+    <div id="modalCaso" class="modal hidden">
+  <div class="modal-backdrop" id="modalBackdrop"></div>
+
+  <div class="modal-dialog modal-dialog-lg">
+    <div class="modal-header">
+      <div>
+        <h3 id="modalTitulo">Detalle del caso</h3>
+        <p id="modalSubtitulo">
+          Estado, falla, precio, fecha de egreso y diagnóstico final quedan siempre editables.
+        </p>
+      </div>
+      <button type="button" class="modal-close" id="btnCerrarModal">✕</button>
+    </div>
+
+    <form id="formEditarCaso" class="modal-body">
+      <input type="hidden" id="editCasoId" />
+
+      <!-- DATOS DEL CLIENTE -->
+      <div class="panel-lite">
+        <h4>Datos del cliente</h4>
+
+        <div class="form-grid two-cols">
+          <div class="field">
+            <label for="editNombre">Nombre</label>
+            <input type="text" id="editNombre" class="lockable" readonly />
+          </div>
+
+          <div class="field">
+            <label for="editApellido">Apellido</label>
+            <input type="text" id="editApellido" class="lockable" readonly />
+          </div>
+
+          <div class="field">
+            <label for="editTipoIdentificacion">Tipo de identificación</label>
+            <select id="editTipoIdentificacion" class="lockable-select">
+              <option value="">Seleccione una opción</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="editNumeroIdentificacion">Número de identificación</label>
+            <input type="text" id="editNumeroIdentificacion" class="lockable" readonly />
+          </div>
+
+          <div class="field">
+            <label for="editTelefono">Teléfono</label>
+            <input type="text" id="editTelefono" class="lockable" readonly />
+          </div>
+
+          <div class="field">
+            <label for="editEmail">Email</label>
+            <input type="email" id="editEmail" class="lockable" readonly />
+          </div>
+        </div>
+      </div>
+
+      <!-- DATOS DEL EQUIPO -->
+      <div class="panel-lite">
+        <h4>Datos del equipo</h4>
+
+        <div class="form-grid two-cols">
+          <div class="field">
+            <label for="editTecnico">Técnico</label>
+            <select id="editTecnico" class="lockable-select">
+              <option value="">Seleccione un técnico</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="editModelo">Modelo</label>
+            <input type="text" id="editModelo" class="lockable" readonly />
+          </div>
+
+          <div class="field">
+            <label for="editColor">Color</label>
+            <input type="text" id="editColor" class="lockable" readonly />
+          </div>
+
+          <div class="field">
+            <label for="editSn">Serial / SN</label>
+            <input type="text" id="editSn" class="lockable" readonly />
+          </div>
+
+          <div class="field">
+            <label for="editContrasena">Contraseña</label>
+            <input type="text" id="editContrasena" class="lockable" readonly />
+          </div>
+
+          <div class="field">
+            <label for="editFechaIngreso">Fecha de ingreso</label>
+            <input type="date" id="editFechaIngreso" class="lockable-date" />
+          </div>
+
+          <div class="field is-editable">
+            <label for="editPrecio">Precio</label>
+            <input type="text" id="editPrecio" class="always-editable" />
+          </div>
+
+          <div class="field is-editable">
+            <label for="editFechaEgreso">Fecha de egreso</label>
+            <input type="date" id="editFechaEgreso" class="always-editable-date" />
+          </div>
+        </div>
+      </div>
+
+      <!-- SERVICIO -->
+      <div class="panel-lite">
+        <h4>Servicio</h4>
+
+        <div class="form-grid two-cols">
+          <div class="field">
+            <label for="editMM">MM</label>
+            <input type="text" id="editMM" readonly />
+          </div>
+
+          <div class="field is-editable">
+            <label for="editEstado">Estado</label>
+            <select id="editEstado" class="always-editable-select">
+              <option value="">Seleccione un estado</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid one-col">
+          <div class="field is-editable">
+            <label for="editFalla">Falla reportada</label>
+            <textarea id="editFalla" rows="3" class="always-editable"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="editApariencia">Descripción apariencia</label>
+            <textarea id="editApariencia" rows="3" class="lockable" readonly></textarea>
+          </div>
+
+          <div class="field is-editable">
+            <label for="editDiagnosticoFinal">Diagnóstico final</label>
+            <textarea id="editDiagnosticoFinal" rows="4" class="always-editable"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="filters-actions modal-actions">
+        <button type="button" class="btn btn-secondary" id="btnHabilitarEdicion">
+          Editar otros datos
+        </button>
+
+        <button type="submit" class="btn btn-primary" id="btnGuardarEdicion">
+          Guardar cambios
+        </button>
+
+        <button type="button" class="btn btn-secondary" id="btnDescargarPdf">
+          Descargar PDF
+        </button>
+
+        <button type="button" class="btn btn-secondary" id="btnCancelarModal">
+          Cerrar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+  <script src="./js/partials-loader.js"></script>
+  <script src="./js/api.js"></script>
+  <script src="./js/views/casos.js"></script>
+  <script src="./js/views/ingresos.js"></script>
+  <script src="./js/views/ingresos-factura.js"></script>
+  <script src="./js/views/calculadora.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>

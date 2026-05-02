@@ -1,0 +1,125 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f7f6f2;      /* mismo fondo base que el dashboard */
+  color: #28251d;           /* texto oscuro suave */
+}
+
+.login-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 520px;
+  background: #fbfbf9;      /* superficie clara tipo panel */
+  border-radius: 20px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.10);
+  padding: 40px 36px;
+  border: 1px solid #e0ddd6; /* borde suave, igual que tus cards */
+}
+
+.login-brand {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.login-logo {
+  width: 110px;
+  height: auto;
+}
+
+.wefone-logo {
+  width: 120px;
+}
+
+.login-brand h1 {
+  margin: 0 0 10px;
+  font-size: 32px;
+  color: #28251d;
+}
+
+.login-brand p {
+  margin: 0;
+  color: #7a7974;           /* texto secundario, similar al dashboard */
+  font-size: 16px;
+}
+
+.login-form {
+  display: grid;
+  gap: 20px;
+}
+
+.field {
+  display: grid;
+  gap: 10px;
+}
+
+.field label {
+  font-weight: 600;
+  font-size: 15px;
+  color: #393731;
+}
+
+.field input {
+  width: 100%;
+  border: 1px solid #d4d1ca;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 16px;
+  background: #fffdf8;      /* leve contraste con la tarjeta */
+  color: #28251d;
+}
+
+.field input::placeholder {
+  color: #bab9b4;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: #01696f;    /* mismo teal de acento que usas en botones */
+  box-shadow: 0 0 0 3px rgba(1, 105, 111, 0.20);
+}
+
+.btn-login {
+  border: none;
+  border-radius: 12px;
+  background: #01696f;      /* botón principal igual que la app */
+  color: #f9f8f4;
+  padding: 14px 18px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.btn-login:hover {
+  background: #0c4e54;
+}
+
+.btn-login:active {
+  background: #0f3638;
+}
+
+.login-message {
+  min-height: 24px;
+  font-size: 15px;
+  color: #a13544;           /* tono de error similar al sistema */
+  text-align: center;
+  margin-top: 4px;
+}
