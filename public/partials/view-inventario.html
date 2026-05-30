@@ -1,0 +1,84 @@
+<section id="view-inventario" class="view-section hidden">
+  <div class="topbar">
+    <div>
+      <h2>Inventario por Excel</h2>
+      <p>Importa, exporta y revisa el historial de cambios del inventario.</p>
+    </div>
+  </div>
+
+  <div class="panel inventario-panel">
+    <div class="panel-header">
+      <h3>Importar archivo</h3>
+      <p>Sube un archivo Excel en formato .xlsx o .xls para procesar el inventario.</p>
+    </div>
+
+    <form id="formImportarInventario" class="inventario-form">
+      <div class="field">
+        <label for="archivoInventario">Archivo Excel</label>
+        <input
+          type="file"
+          id="archivoInventario"
+          name="archivo"
+          accept=".xlsx,.xls"
+          required
+        />
+      </div>
+
+      <div class="filters-actions">
+        <button type="submit" class="btn btn-primary">Subir Excel</button>
+      </div>
+    </form>
+
+    <div id="resultadoImportacion" class="inventario-feedback"></div>
+  </div>
+
+  <div class="panel inventario-panel section-gap">
+    <div class="panel-header">
+      <h3>Acciones</h3>
+      <p>Exporta el inventario actual en formato Excel.</p>
+    </div>
+
+    <div class="filters-actions">
+      <button id="btnExportarInventario" type="button" class="btn btn-secondary">
+        Exportar inventario
+      </button>
+    </div>
+  </div>
+
+  <div class="panel inventario-panel section-gap">
+    <div class="panel-header">
+      <h3>Historial de importaciones</h3>
+      <p>Consulta las cargas realizadas y su resultado.</p>
+    </div>
+
+    <div class="filters-actions">
+      <button id="btnCargarImportaciones" type="button" class="btn btn-secondary">
+        Recargar historial
+      </button>
+    </div>
+
+    <div id="tablaImportaciones" class="table-wrap inventario-table-wrap"></div>
+  </div>
+
+  <div class="panel inventario-panel section-gap">
+    <div class="panel-header">
+      <h3>Cambios de una importación</h3>
+      <p>Ingresa el ID de una importación para ver el detalle de cambios detectados.</p>
+    </div>
+
+    <div class="inventario-inline-form">
+      <div class="field inventario-id-field">
+        <label for="inputImportacionId">ID importación</label>
+        <input type="number" id="inputImportacionId" placeholder="Ej: 15" />
+      </div>
+
+      <div class="inventario-inline-actions">
+        <button id="btnVerCambios" type="button" class="btn btn-primary">
+          Ver cambios
+        </button>
+      </div>
+    </div>
+
+    <div id="tablaCambios" class="table-wrap inventario-table-wrap"></div>
+  </div>
+</section>

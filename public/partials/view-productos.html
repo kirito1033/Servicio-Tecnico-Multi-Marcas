@@ -1,0 +1,138 @@
+<section id="view-productos" class="view-section hidden">
+  <div class="topbar">
+    <div>
+      <h2>Productos</h2>
+      <p>Consulta todos los productos importados con filtros y paginación.</p>
+    </div>
+  </div>
+
+  <div class="panel section-gap">
+    <div class="panel-header">
+      <h3>Filtros</h3>
+      <p>Busca por nombre, código y rango de fechas.</p>
+    </div>
+
+    <div class="filters-grid productos-filtros-grid">
+      <div class="field">
+        <label for="filtroProductoNombre">Nombre</label>
+        <input type="text" id="filtroProductoNombre" placeholder="Buscar por nombre" />
+      </div>
+
+      <div class="field">
+        <label for="filtroProductoCodigo">Código ítem</label>
+        <input type="text" id="filtroProductoCodigo" placeholder="Buscar por código" />
+      </div>
+
+      <div class="field">
+        <label for="filtroCreatedFrom">Creado desde</label>
+        <input type="date" id="filtroCreatedFrom" />
+      </div>
+
+      <div class="field">
+        <label for="filtroCreatedTo">Creado hasta</label>
+        <input type="date" id="filtroCreatedTo" />
+      </div>
+
+      <div class="field">
+        <label for="filtroUpdatedFrom">Actualizado desde</label>
+        <input type="date" id="filtroUpdatedFrom" />
+      </div>
+
+      <div class="field">
+        <label for="filtroUpdatedTo">Actualizado hasta</label>
+        <input type="date" id="filtroUpdatedTo" />
+      </div>
+    </div>
+
+    <div class="filters-actions">
+      <button id="btnLimpiarFiltrosProductos" type="button" class="btn btn-secondary">Limpiar</button>
+      <button id="btnRecargarProductos" type="button" class="btn btn-primary">Recargar</button>
+    </div>
+  </div>
+
+  <div class="panel section-gap">
+    <div class="panel-header">
+      <h3>Listado de productos</h3>
+      <p id="productosResumen">Cargando productos...</p>
+    </div>
+
+    <div id="productosTablaWrap" class="table-wrap">
+      <table class="cases-table productos-table">
+        <thead>
+            <tr>
+            <th>ID</th>
+            <th>Código ítem</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Cantidad en la mano</th>
+            <th>Cantidad disponible</th>
+            <th>Cantidad congelada</th>
+            <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="productosTableBody">
+            <tr>
+            <td colspan="8">Cargando...</td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+
+    <div class="productos-pagination">
+      <button id="btnProductosPrev" type="button" class="btn btn-secondary">Anterior</button>
+      <span id="productosPaginacionTexto">Página 1 de 1</span>
+      <button id="btnProductosNext" type="button" class="btn btn-secondary">Siguiente</button>
+    </div>
+  </div>
+
+  <div id="modalSolicitar" class="modal-ingreso hidden">
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <div>
+        <h3>Nueva solicitud</h3>
+        <p id="modalSolicitarSubtitulo">Completa los datos para solicitar el producto.</p>
+      </div>
+      <button type="button" class="modal-close-btn" id="btnCerrarModalSolicitar">✕</button>
+    </div>
+
+    <form id="formSolicitar" class="modal-body">
+      <input type="hidden" id="solicitarItemId" />
+
+      <div class="form-group">
+       <label for="solicitarNombreProducto">Producto</label> 
+        <input type="text" id="solicitarNombreProducto" readonly />
+      </div>
+
+      <div class="form-group">
+        <label for="solicitarCantidad">Cantidad</label>
+        <input
+          type="number"
+          id="solicitarCantidad"
+          min="1"
+          value="1"
+          required
+        />
+      </div>
+      
+      <div class="form-group">
+        <label for="solicitarRn">RN</label>
+        <textarea
+            required
+            id="solicitarRn"
+            rows="3"
+        ></textarea>
+        </div>
+
+      <div id="solicitarFeedback"></div>
+    </form>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" id="btnCancelarSolicitar">Cancelar</button>
+      <button type="button" class="btn btn-primary" id="btnGuardarSolicitud">Guardar solicitud</button>
+    </div>
+
+  </div>
+</div>
+</section>
+

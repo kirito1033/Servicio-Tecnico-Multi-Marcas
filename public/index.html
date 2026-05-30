@@ -20,9 +20,14 @@
       <nav class="sidebar-nav">
         <button class="nav-link active" data-view="casos">Casos</button>
         <button class="nav-link" data-view="ingresos">Ingresos</button>
+        <button class="nav-link" data-view="firmas">Firmar</button>
         <button class="nav-link" data-view="calculadora">Calculadora</button>
         <button class="nav-link" data-view="ingresos-factura">Ingresos repuestos</button>
         <button class="nav-link" data-view="ingresos-factura-tabla">Ingresos Factura</button>
+        <button class="nav-link" data-view="clientes-tienda">Clientes tienda</button>
+        <button class="nav-link" data-view="inventario">Subir Inventario</button>
+        <button class="nav-link" data-view="productos">Productos</button>
+         <button class="nav-link" data-view="solicitudes">Solicitudes</button>
       </nav>
     </aside>
 
@@ -588,6 +593,11 @@
       <div data-include="./partials/view-calculadora.html"></div>
       <div data-include="./partials/view-ingresos-factura.html"></div>
       <div data-include="./partials/view-ingresos-table.html"></div>
+      <div data-include="partials/view-clientes-tienda.html"></div>
+      <div data-include="./partials/view-inventario.html"></div>
+      <div data-include="./partials/view-productos.html"></div>
+      <div data-include="./partials/view-solicitudes.html"></div>
+      <div data-include="./partials/view-firmas.html"></div>
     </main>
   </div>
     <div id="modalCaso" class="modal hidden">
@@ -757,6 +767,17 @@
   <script src="./js/views/ingresos.js"></script>
   <script src="./js/views/ingresos-factura.js"></script>
   <script src="./js/views/calculadora.js"></script>
+  <script src="./js/views/clientes-tienda.js"></script>
+  <script src="./js/views/inventario.js"></script>
+  <script src="./js/views/productos.js"></script>
+  <script src="./js/views/solicitudes.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+</script>
+  <script src="./js/views/firmas.js"></script>
   <script src="./js/app.js"></script>
+  
 </body>
 </html>

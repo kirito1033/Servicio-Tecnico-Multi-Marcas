@@ -5,6 +5,7 @@ async function verificarSesion() {
   try {
     const res = await fetch('/api/auth/me', {
       method: 'GET',
+      credentials: 'include',
       headers: {
         'Accept': 'application/json'
       }
@@ -30,6 +31,7 @@ loginForm?.addEventListener('submit', async (e) => {
   try {
     const res = await fetch('/api/auth/login', {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'

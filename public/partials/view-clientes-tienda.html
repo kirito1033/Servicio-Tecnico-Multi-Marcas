@@ -1,0 +1,39 @@
+<section id="view-clientes-tienda" class="view-section hidden">
+  <header class="topbar">
+    <div>
+      <h2>Clientes tienda</h2>
+      <p>Consulta los registros enviados desde el QR.</p>
+    </div>
+  </header>
+
+  <section class="panel">
+    <div class="panel-header">
+      <div>
+        <h3>Listado de clientes</h3>
+        <p id="resumenClientesTienda">Sin registros cargados.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="cases-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre completo</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+            <th>Descripción de falla</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyClientesTienda"></tbody>
+      </table>
+    </div>
+
+    <div id="emptyClientesTienda" class="empty-state hidden">
+      <h4>No hay clientes registrados</h4>
+      <p>Cuando los clientes llenen el formulario desde el QR, aparecerán aquí.</p>
+    </div>
+  </section>
+</section>

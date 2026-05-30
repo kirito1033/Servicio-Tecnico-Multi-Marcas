@@ -61,29 +61,39 @@ function renderTablaCasos(rows) {
   emptyState?.classList.add('hidden');
   if (resumen) resumen.textContent = `${rows.length} caso(s) encontrados.`;
 
-  rows.forEach((row, index) => {
-    const tr = document.createElement('tr');
+ rows.forEach((row, index) => {
+  const tr = document.createElement('tr');
 
-    tr.innerHTML = `
-      <td>${row.mm || ''}</td>
-      <td>${row.tecnico || ''}</td>
-      <td>${(row.nombre || '')} ${(row.apellido || '')}</td>
-      <td>${row.numeroIdentificacion || ''}</td>
-      <td>${row.telefono || ''}</td>
-      <td>${row.modelo || ''}</td>
-      <td>${row.falla || ''}</td>
-      <td>${badgeEstado(row.estado)}</td>
-      <td class="actions-cell">
-        <div class="action-buttons">
-          <button type="button" class="btn-action view" data-index="${index}" data-action="view">Ver</button>
-          <button type="button" class="btn-action edit" data-index="${index}" data-action="edit">Editar</button>
-          <button type="button" class="btn-action pdf" data-index="${index}" data-action="pdf">PDF</button>
-        </div>
-      </td>
-    `;
+  tr.innerHTML = `
+    <td>${row.mm || ''}</td>
+    <td>${row.tecnico || ''}</td>
+    <td>${(row.nombre || '')} ${(row.apellido || '')}</td>
+    <td>${row.numeroIdentificacion || ''}</td>
+    <td>${row.telefono || ''}</td>
+    <td>${row.modelo || ''}</td>
+    <td>${row.falla || ''}</td>
+    <td>${badgeEstado(row.estado)}</td>
+    <td class="actions-cell">
+      <div class="action-buttons">
+        <button type="button" class="btn-action view" data-index="${index}" data-action="view">
+          Ver
+        </button>
+        <button type="button" class="btn-action edit" data-index="${index}" data-action="edit">
+          Editar
+        </button>
+        <button type="button" class="btn-action pdf" data-index="${index}" data-action="pdf">
+          PDF
+        </button>
+        <!-- NUEVO BOTÓN -->
+        <button type="button" class="btn-action firmar" data-index="${index}" data-action="firmar">
+          Firmar
+        </button>
+      </div>
+    </td>
+  `;
 
-    tbody.appendChild(tr);
-  });
+  tbody.appendChild(tr);
+});
 
   actualizarStats(rows);
 }
@@ -469,6 +479,15 @@ document.addEventListener('click', async (event) => {
 
   if (action === 'pdf') {
     await descargarPdfDirecto(caso.id, caso.mm);
+  }
+
+  // NUEVO: abrir pantalla de firma
+  if (action === 'firmar') {
+    // Si quieres nueva pestaña:
+    // window.open(`/casos/${caso.id}/firmar`, '_blank');
+
+    // Si quieres misma pestaña (ideal cuando usas el celular del cliente):
+    window.location.href = `/casos/${caso.id}/firmar`;
   }
 });
 

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Firmar documento</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+    }
+    .topbar {
+      background: #0f172a;
+      color: white;
+      padding: 12px 16px;
+    }
+    .topbar h1 {
+      margin: 0;
+      font-size: 18px;
+    }
+    .topbar p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      opacity: 0.9;
+    }
+    .container {
+      padding: 12px 16px 24px;
+    }
+    .card {
+      background: white;
+      border-radius: 8px;
+      padding: 12px 14px;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.1);
+      margin-bottom: 12px;
+    }
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+    .card p {
+      margin: 2px 0;
+      font-size: 13px;
+    }
+    .label {
+      font-weight: 600;
+    }
+    .firma-wrapper {
+      border: 1px solid #cbd5f5;
+      border-radius: 8px;
+      background: #f9fafb;
+      position: relative;
+      overflow: hidden;
+    }
+    #canvasFirma {
+      width: 100%;
+      height: 220px;
+      touch-action: none;
+      display: block;
+      background: white;
+    }
+    .firma-placeholder {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #9ca3af;
+      font-size: 13px;
+      pointer-events: none;
+    }
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .btn {
+      flex: 1;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+    .feedback {
+      margin-top: 8px;
+      font-size: 13px;
+    }
+    .feedback.ok {
+      color: #16a34a;
+    }
+    .feedback.error {
+      color: #dc2626;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <h1>Firmar documento</h1>
+    <p id="subtituloFirma">Cargando información...</p>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Resumen</h2>
+      <p><span class="label">Descripción:</span> <span id="descripcionDoc">-</span></p>
+    </section>
+
+    <section class="card">
+      <h2>Firma del cliente</h2>
+      <p style="font-size: 12px; color:#6b7280; margin-bottom:8px;">
+        Pida al cliente que firme dentro del recuadro usando su dedo o lápiz digital.
+      </p>
+
+      <div class="firma-wrapper">
+        <canvas id="canvasFirma"></canvas>
+        <div id="placeholderFirma" class="firma-placeholder">
+          Dibuje aquí la firma
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn-secondary" id="btnLimpiarFirma">
+          Limpiar
+        </button>
+        <button type="button" class="btn btn-primary" id="btnGuardarFirma">
+          Guardar firma
+        </button>
+      </div>
+
+      <p id="feedbackFirma" class="feedback"></p>
+      <p style="margin-top:4px;">
+        <a id="linkPdfFirmado" href="#" target="_blank" style="font-size:13px; display:none;">
+          Descargar PDF firmado
+        </a>
+      </p>
+    </section>
+  </main>
+
+  <script>
+    function getTokenFromUrl() {
+      const path = window.location.pathname;
+      const match = path.match(/\/firmar\/([a-zA-Z0-9]+)/);
+      if (match) return match[1];
+      const params = new URLSearchParams(window.location.search);
+      return params.get('token');
+    }
+
+    const token = getTokenFromUrl();
+    const API_BASE = window.location.origin;
+
+    const canvas = document.getElementById('canvasFirma');
+    const placeholder = document.getElementById('placeholderFirma');
+    const btnLimpiar = document.getElementById('btnLimpiarFirma');
+    const btnGuardar = document.getElementById('btnGuardarFirma');
+    const feedback = document.getElementById('feedbackFirma');
+    const linkPdfFirmado = document.getElementById('linkPdfFirmado');
+
+    let ctx;
+    let drawing = false;
+    let hasDrawnSomething = false;
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const ratio = window.devicePixelRatio || 1;
+
+      canvas.width = rect.width * ratio;
+      canvas.height = rect.height * ratio;
+
+      ctx = canvas.getContext('2d');
+      ctx.scale(ratio, ratio);
+
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = '#111827';
+
+      clearCanvas();
+    }
+
+    function clearCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      ctx.clearRect(0, 0, rect.width, rect.height);
+      hasDrawnSomething = false;
+      placeholder.style.display = 'block';
+    }
+
+    function getCanvasPos(evt) {
+      const rect = canvas.getBoundingClientRect();
+      let clientX, clientY;
+
+      if (evt.touches && evt.touches.length > 0) {
+        clientX = evt.touches[0].clientX;
+        clientY = evt.touches[0].clientY;
+      } else {
+        clientX = evt.clientX;
+        clientY = evt.clientY;
+      }
+
+      return {
+        x: clientX - rect.left,
+        y: clientY - rect.top
+      };
+    }
+
+    function startDrawing(evt) {
+      evt.preventDefault();
+      const pos = getCanvasPos(evt);
+      drawing = true;
+      hasDrawnSomething = true;
+      placeholder.style.display = 'none';
+
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+    }
+
+    function draw(evt) {
+      if (!drawing) return;
+      evt.preventDefault();
+      const pos = getCanvasPos(evt);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+    }
+
+    function stopDrawing(evt) {
+      if (!drawing) return;
+      evt.preventDefault();
+      drawing = false;
+    }
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseleave', stopDrawing);
+
+    canvas.addEventListener('touchstart', startDrawing, { passive: false });
+    canvas.addEventListener('touchmove', draw, { passive: false });
+    canvas.addEventListener('touchend', stopDrawing, { passive: false });
+    canvas.addEventListener('touchcancel', stopDrawing, { passive: false });
+
+    btnLimpiar.addEventListener('click', clearCanvas);
+
+    async function cargarSesion() {
+      if (!token) {
+        document.getElementById('subtituloFirma').textContent = 'Token de firma no encontrado';
+        return;
+      }
+
+      try {
+        const resp = await fetch(`${API_BASE}/api/firmas/sesion/${token}`);
+        const data = await resp.json();
+
+        if (!resp.ok || !data.ok) {
+          throw new Error(data.error || 'Sesión no disponible');
+        }
+
+        document.getElementById('subtituloFirma').textContent = 'Documento listo para firmar';
+        document.getElementById('descripcionDoc').textContent = data.descripcion || '(Sin descripción)';
+      } catch (err) {
+        console.error(err);
+        document.getElementById('subtituloFirma').textContent =
+          err.message || 'No se pudo cargar la sesión de firma';
+        btnGuardar.disabled = true;
+      }
+    }
+
+    async function guardarFirma() {
+      feedback.textContent = '';
+      feedback.className = 'feedback';
+
+      if (!hasDrawnSomething) {
+        feedback.textContent = 'Por favor, dibuja la firma antes de guardar.';
+        feedback.classList.add('error');
+        return;
+      }
+
+      try {
+        btnGuardar.disabled = true;
+        btnLimpiar.disabled = true;
+        feedback.textContent = 'Guardando firma...';
+
+        const dataUrl = canvas.toDataURL('image/png');
+
+        const resp = await fetch(`${API_BASE}/api/firmas/firmar/${token}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            firmaBase64: dataUrl
+          })
+        });
+
+        const data = await resp.json().catch(() => null);
+
+        if (!resp.ok || !data?.ok) {
+          throw new Error(data?.error || 'Error guardando firma');
+        }
+
+        feedback.textContent = 'Firma guardada correctamente.';
+        feedback.classList.add('ok');
+
+        if (linkPdfFirmado) {
+          linkPdfFirmado.href = `${API_BASE}/api/firmas/pdf-firmado/${token}`;
+          linkPdfFirmado.style.display = 'inline';
+          linkPdfFirmado.textContent = 'Descargar PDF firmado';
+        }
+
+        btnGuardar.disabled = true;
+      } catch (err) {
+        console.error(err);
+        feedback.textContent = err.message || 'Error guardando firma.';
+        feedback.classList.add('error');
+        btnGuardar.disabled = false;
+        btnLimpiar.disabled = false;
+      }
+    }
+
+    btnGuardar.addEventListener('click', guardarFirma);
+
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('orientationchange', () => {
+      setTimeout(resizeCanvas, 300);
+    });
+
+    window.addEventListener('load', () => {
+      resizeCanvas();
+      cargarSesion();
+    });
+  </script>
+</body>
+</html>

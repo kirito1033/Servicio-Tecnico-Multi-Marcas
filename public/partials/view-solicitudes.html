@@ -1,0 +1,146 @@
+<section id="view-solicitudes" class="view-section hidden">
+  <div class="topbar">
+    <div>
+      <h2>Solicitudes</h2>
+      <p>Consulta solicitudes registradas, revisa su historial y actualiza el estado.</p>
+    </div>
+  </div>
+
+  <div class="panel section-gap">
+    <div class="panel-header">
+      <h3>Filtros</h3>
+      <p>Busca por código, nombre del producto y estado.</p>
+    </div>
+
+    <div class="filters-grid solicitudes-filtros-grid">
+      <div class="field">
+        <label for="filtroSolicitudCodigo">Código de item</label>
+        <input type="text" id="filtroSolicitudCodigo" placeholder="Buscar por código" />
+      </div>
+
+      <div class="field">
+        <label for="filtroSolicitudNombre">Nombre del producto</label>
+        <input type="text" id="filtroSolicitudNombre" placeholder="Buscar por nombre" />
+      </div>
+
+      <div class="field">
+        <label for="filtroSolicitudEstado">Estado</label>
+        <select id="filtroSolicitudEstado">
+        <option value="">Todos los estados</option>
+        <option value="pendiente_aprobacion">Pendiente aprobación</option>
+        <option value="entregado">Entregado</option>
+        <option value="pendiente_devolucion">Pendiente devolución</option>
+        <option value="devuelto">Devuelto</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="filters-actions">
+      <button id="btnRecargarSolicitudes" type="button" class="btn btn-primary">Recargar</button>
+    </div>
+  </div>
+
+  <div class="panel section-gap">
+    <div class="panel-header">
+      <h3>Listado de solicitudes</h3>
+      <p id="solicitudesResumen">Cargando solicitudes...</p>
+    </div>
+
+    <div class="table-wrap">
+      <table class="cases-table solicitudes-table">
+        <thead>
+            <tr>
+            <th>ID</th>
+            <th>Código</th>
+            <th>Producto</th>
+            <th>Cant. mano</th>
+            <th>Cant. disponible</th>
+            <th>Cant. congelada</th>
+            <th>Cantidad solicitada</th>
+            <th>RN</th>
+            <th>Estado</th>
+            <th>Solicitado por</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="solicitudesTableBody"></tbody>
+        </table>
+    </div>
+  </div>
+
+  <div class="panel section-gap">
+    <div class="panel-header">
+      <h3>Historial de solicitud</h3>
+      <p id="solicitudesHistorialResumen">Selecciona una solicitud para ver su historial.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table class="cases-table solicitudes-historial-table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Usuario</th>
+            <th>Estado anterior</th>
+            <th>Estado nuevo</th>
+            <th>RN</th>
+            <th>Observación</th>
+        </tr>
+        </thead>
+        <tbody id="solicitudesHistorialBody">
+          <tr>
+            <td colspan="5">Sin historial para mostrar.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="modalEditarSolicitud" class="modal-ingreso hidden">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div>
+        <h3>Editar solicitud</h3>
+        <p>Actualiza el estado de la solicitud.</p>
+      </div>
+      <button type="button" class="modal-close-btn" id="btnCerrarModalEditarSolicitud">✕</button>
+    </div>
+
+    <form id="formEditarSolicitud" class="modal-body">
+      <input type="hidden" id="editarSolicitudId" />
+
+<div class="form-group">
+  <label for="editarSolicitudProducto">Producto</label>
+  <input type="text" id="editarSolicitudProducto" readonly />
+</div>
+
+<div class="form-group">
+  <label for="editarSolicitudDescripcion">Descripción</label>
+  <textarea id="editarSolicitudDescripcion" rows="3" readonly></textarea>
+</div>
+
+<div class="form-group">
+  <label for="editarSolicitudRn">RN</label>
+  <textarea id="editarSolicitudRn" rows="3" required></textarea>
+</div>
+
+<div class="form-group">
+  <label for="editarSolicitudEstado">Estado</label>
+  <select id="editarSolicitudEstado" required>
+    <option value="pendiente_aprobacion">Pendiente aprobación</option>
+    <option value="entregado">Entregado</option>
+    <option value="pendiente_devolucion">Pendiente devolución</option>
+    <option value="devuelto">Devuelto</option>
+  </select>
+</div>
+
+      <div id="editarSolicitudFeedback"></div>
+    </form>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" id="btnCancelarEditarSolicitud">Cancelar</button>
+      <button type="button" class="btn btn-primary" id="btnGuardarEdicionSolicitud">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+</section>

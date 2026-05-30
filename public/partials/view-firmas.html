@@ -1,0 +1,115 @@
+<section id="view-firmas" class="view-section hidden">
+  <header class="topbar">
+    <div>
+      <h2>Módulo de firmas</h2>
+      <p>Sube un PDF, selecciona la ubicación de la firma y genera un código QR.</p>
+    </div>
+  </header>
+
+  <section class="panel">
+    <div class="panel-header">
+      <div>
+        <h3>Crear sesión de firma</h3>
+        <p>Selecciona el PDF, define dónde irá la firma y luego genera el QR.</p>
+      </div>
+    </div>
+
+    <form id="formCrearSesionFirma" class="form-grid one-col" enctype="multipart/form-data">
+      <div class="field">
+        <label for="descripcionFirma">Descripción del documento</label>
+        <input
+          type="text"
+          id="descripcionFirma"
+          placeholder="Ej. Orden de servicio MM123, Contrato proveedor X"
+        />
+      </div>
+
+      <div class="field">
+        <label for="archivoPdfFirma">Archivo PDF</label>
+        <input type="file" id="archivoPdfFirma" accept="application/pdf" required />
+        <small>Solo se aceptan archivos PDF.</small>
+      </div>
+
+      <div class="field">
+        <label>Ubicación de la firma</label>
+        <p style="font-size: 12px; color: #6b7280; margin-bottom: 8px;">
+          Carga el PDF y toca o arrastra el recuadro azul donde debe ir la firma.
+        </p>
+
+        <div
+          id="pdfPreviewWrapperAdmin"
+          style="position:relative; width:100%; max-height:500px; overflow:auto; border:1px solid #cbd5e1; border-radius:8px; background:#f8fafc;"
+        >
+          <canvas id="pdfCanvasFirmaAdmin" style="display:block; width:100%; height:auto;"></canvas>
+
+          <div
+            id="signatureBoxAdmin"
+            style="position:absolute; width:140px; height:60px; border:2px dashed #2563eb; background:rgba(37,99,235,0.15); border-radius:4px; display:none; touch-action:none; cursor:move;"
+          >
+            <div
+              style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:11px; color:#1d4ed8; font-weight:600; pointer-events:none;"
+            >
+              Firma aquí
+            </div>
+          </div>
+
+          <div
+            id="pdfLoadingAdmin"
+            style="padding:20px; text-align:center; color:#64748b;"
+          >
+            Selecciona un PDF para previsualizarlo
+          </div>
+        </div>
+
+        <small>
+          Posición seleccionada:
+          <span id="positionCoordsAdmin">No seleccionada</span>
+        </small>
+      </div>
+
+      <div class="filters-actions">
+        <button type="submit" class="btn btn-primary">Crear sesión y generar QR</button>
+        <button type="button" id="btnLimpiarFirma" class="btn btn-secondary">Limpiar</button>
+      </div>
+    </form>
+  </section>
+
+  <section id="panelResultadoFirma" class="panel hidden">
+    <div class="panel-header">
+      <div>
+        <h3>Sesión de firma creada</h3>
+        <p>Escanea el código QR con un celular o tablet para abrir el documento y firmarlo.</p>
+      </div>
+    </div>
+
+    <div class="firma-resultado-grid">
+      <div class="field">
+        <label>Descripción</label>
+        <p id="resultadoDescripcionFirma" class="resultado-texto">-</p>
+      </div>
+
+      <div class="field">
+        <label>Enlace de firma</label>
+        <p>
+          <a id="resultadoLinkFirma" href="#" target="_blank" rel="noopener">-</a>
+        </p>
+      </div>
+
+      <div class="field">
+        <label>Código QR</label>
+        <div class="qr-box">
+          <img id="qrFirmaImg" alt="Código QR de firma" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>PDF firmado</label>
+        <p>
+          <button type="button" class="btn btn-secondary" id="btnDescargarPdfFirmado">
+            Descargar PDF firmado
+          </button>
+        </p>
+      </div>
+    </div>
+  </section>
+</section>
